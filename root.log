@@ -1,0 +1,33 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.7.28)  14 SEP 2026 13:46
+entering extended mode
+ restricted \write18 enabled.
+ file:line:error style messages enabled.
+ %&-line parsing enabled.
+**c:/Users/emper/Desktop/ICRA2026/locomotion_learning_information-theory/root.tex
+(c:/Users/emper/Desktop/ICRA2026/locomotion_learning_information-theory/root.tex
+LaTeX2e <2025-11-01>
+L3 programming layer <2025-12-24>
+
+! LaTeX Error: File `ieeeconf.cls' not found.
+
+Type X to quit or <RETURN> to proceed,
+or enter new name. (Default extension: cls)
+
+Enter file name: 
+c:/Users/emper/Desktop/ICRA2026/locomotion_learning_information-theory/root.tex:6: Emergency stop.
+<read *> 
+         
+l.6 ^^M
+       
+*** (cannot \read from terminal in nonstop modes)
+
+ 
+Here is how much of TeX's memory you used:
+ 21 strings out of 467871
+ 646 string characters out of 5418376
+ 433733 words of memory out of 5000000
+ 29000 multiletter control sequences out of 15000+600000
+ 627721 words of font info for 40 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 19i,0n,29p,191b,17s stack positions out of 10000i,1000n,20000p,200000b,200000s
+c:/Users/emper/Desktop/ICRA2026/locomotion_learning_information-theory/root.tex:6:  ==> Fatal error occurred, no output PDF file produced!

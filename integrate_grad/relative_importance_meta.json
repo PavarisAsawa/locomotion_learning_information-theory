@@ -1,0 +1,23 @@
+{
+  "group_order": [
+    "pos",
+    "vel",
+    "action",
+    "imu",
+    "fc"
+  ],
+  "policies": [
+    "STUDENT-dagger-0-ig",
+    "STUDENT-dagger-1-ig",
+    "STUDENT-dagger-2-ig",
+    "STUDENT-dagger-3-ig",
+    "STUDENT-dagger-4-ig",
+    "STUDENT-dagger-5-ig",
+    "STUDENT-dagger-6-ig",
+    "STUDENT-dagger-7-ig",
+    "STUDENT-dagger-8-ig",
+    "STUDENT-dagger-9-ig"
+  ],
+  "terrain": "flat",
+  "source": "real IG (ig_summary.json, on-policy states)"
+}

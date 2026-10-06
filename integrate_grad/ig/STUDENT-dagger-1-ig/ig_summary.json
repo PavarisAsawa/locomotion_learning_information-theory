@@ -1,0 +1,92 @@
+{
+  "experiment": "STUDENT-dagger-1",
+  "per_terrain": true,
+  "baseline": "zeros",
+  "ig_steps": 64,
+  "reduce": "abs_sum",
+  "terrains": {
+    "flat": {
+      "student": "logs/distill/STUDENT-dagger-1-flat/model/student_latest.pt",
+      "trained_on": [
+        "flat"
+      ],
+      "buffer": "data/distill/STUDENT-dagger-1-flat-student-flat.npy",
+      "n_states": 20000,
+      "completeness_error": 0.0012930959928780794,
+      "group_importance_pct": {
+        "pos": 18.482362646922805,
+        "vel": 34.972015124797586,
+        "action": 37.68871838950472,
+        "imu": 0.6648327943161431,
+        "fc": 8.192071044458745
+      },
+      "top_sensors": [
+        {
+          "sensor": "vel/joint2_lf",
+          "importance": 2.4674675464630127
+        },
+        {
+          "sensor": "vel/joint1_lh",
+          "importance": 2.2823197841644287
+        },
+        {
+          "sensor": "action/joint0_h",
+          "importance": 2.2591392993927
+        },
+        {
+          "sensor": "vel/joint4_rf",
+          "importance": 2.171201705932617
+        },
+        {
+          "sensor": "action/joint0_m",
+          "importance": 1.914244294166565
+        },
+        {
+          "sensor": "action/joint0_f",
+          "importance": 1.9062089920043945
+        },
+        {
+          "sensor": "fc/foot_2",
+          "importance": 1.7593241930007935
+        },
+        {
+          "sensor": "vel/joint2_rf",
+          "importance": 1.7486928701400757
+        },
+        {
+          "sensor": "action/joint1_rf",
+          "importance": 1.6070098876953125
+        },
+        {
+          "sensor": "fc/foot_1",
+          "importance": 1.6021339893341064
+        },
+        {
+          "sensor": "action/joint4_rf",
+          "importance": 1.5927783250808716
+        },
+        {
+          "sensor": "action/joint1_lf",
+          "importance": 1.5906593799591064
+        },
+        {
+          "sensor": "action/joint3_lh",
+          "importance": 1.5511480569839478
+        },
+        {
+          "sensor": "action/joint4_lf",
+          "importance": 1.5267107486724854
+        },
+        {
+          "sensor": "action/joint1_rh",
+          "importance": 1.5037083625793457
+        }
+      ],
+      "eval_metrics": {
+        "return_mean": 352.80157470703125,
+        "distance_x_mean": 4.7083210945129395,
+        "reward_per_step_mean": 0.3528015747070313
+      }
+    }
+  }
+}

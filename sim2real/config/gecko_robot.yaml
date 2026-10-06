@@ -1,0 +1,139 @@
+# Single source of truth for the gecko robot.
+#
+# Vendored from learning_interface/gecko_py/robot_interfaces/{gecko_constant.py,
+# config/dynamixel_config.yaml}. All 21 motors are XM430-W350R on one
+# half-duplex RS485 bus, shared with the four foot F/T sensors.
+
+bus:
+  port: /dev/ttyAMA0
+  baudrate: 2000000
+  protocol: 2.0
+
+rates:
+  bus_hz: 50
+  imu_hz: 100
+  policy_hz: 50
+
+# The 19 policy-controlled joints.
+#
+# THIS ORDER IS THE ACTION/OBSERVATION VECTOR ORDER -- it is preserved exactly
+# from SIM_REAL_MOTOR_IDS and must not be reordered without retraining.
+#
+# id scheme is <segment><leg>: leg 1=front_left 2=rear_left 3=rear_right
+# 4=front_right; segment 1=inner 2=mid 3=outer 4=tip. Spline ids are 15/25/35.
+#
+# There are three distinct angle spaces. Keeping them straight matters:
+#
+#   normalized action   the net's tanh output, [-1, 1]. Maps PIECEWISE about
+#                       home: 0 -> home, -1 -> limit_deg[0], +1 -> limit_deg[1].
+#                       Each side scales by its own limit magnitude, so an
+#                       asymmetric joint has a different gain per direction.
+#                       limit_deg must therefore bracket 0.
+#   policy degrees      what /gecko/motor_command carries (as radians).
+#                       0 IS HOME. Bounded by limit_deg.
+#   motor degrees       what goes on the wire: home_deg + policy degrees.
+#                       Never leaves dynamixel_bus.
+#
+# So: home_deg is the real motor position that the policy calls 0, and limit_deg
+# is in the policy's own scale (1:1 with motor degrees, just shifted by home_deg).
+#
+# Worked example, fr_mid (home_deg 225, limit_deg [-100, 10]):
+#   action -1 -> policy -100 deg -> motor 125 deg
+#   action  0 -> policy    0 deg -> motor 225 deg   (home)
+#   action +1 -> policy  +10 deg -> motor 235 deg
+#
+# The mid and tip joints are deliberately asymmetric and mirrored left/right.
+
+joints:
+  - {name: spline_mid2, id: 25, home_deg: 180, limit_deg: [-15,  15] , sim_id: 0}
+  - {name: spline_mid3, id: 35, home_deg: 180, limit_deg: [-15,  15] , sim_id: 1}
+  - {name: spline_mid1, id: 15, home_deg: 180, limit_deg: [-15,  15] , sim_id: 2}
+
+  - {name: fr_inner,    id: 14, home_deg: 180, limit_deg: [-45,  45] , sim_id: 3}
+  - {name: fl_inner,    id: 11, home_deg: 180, limit_deg: [-45,  45] , sim_id: 4}
+  - {name: rr_inner,    id: 13, home_deg: 180, limit_deg: [-45,  45] , sim_id: 5}
+  - {name: rl_inner,    id: 12, home_deg: 180, limit_deg: [-45,  45] , sim_id: 6}
+
+  - {name: fr_mid,      id: 24, home_deg: 225, limit_deg: [-95, 5] , sim_id: 7}
+  - {name: fl_mid,      id: 21, home_deg: 135, limit_deg: [-5, 95] , sim_id: 8}
+  - {name: rr_mid,      id: 23, home_deg: 135, limit_deg: [-5, 95] , sim_id: 9}
+  - {name: rl_mid,      id: 22, home_deg: 225, limit_deg: [-95, 5] , sim_id: 10}
+
+  - {name: fr_outer,    id: 34, home_deg: 180, limit_deg: [-45,  45] , sim_id: 11}
+  - {name: fl_outer,    id: 31, home_deg: 180, limit_deg: [-45,  45] , sim_id: 12}
+  - {name: rr_outer,    id: 33, home_deg: 180, limit_deg: [-45,  45] , sim_id: 13}
+  - {name: rl_outer,    id: 32, home_deg: 180, limit_deg: [-45,  45] , sim_id: 14}
+
+  - {name: fr_tip,      id: 44, home_deg: 225, limit_deg: [-100, 10] , sim_id: 15}
+  - {name: fl_tip,      id: 41, home_deg: 135, limit_deg: [-10, 100] , sim_id: 16}
+  - {name: rr_tip,      id: 43, home_deg: 135, limit_deg: [-10, 100] , sim_id: 17}
+  - {name: rl_tip,      id: 42, home_deg: 225, limit_deg: [-100, 10] , sim_id: 18}
+
+# Torqued to a constant angle and never commanded by the policy.
+fixed_joints:
+  - {name: spline_tail, id: 45, angle_deg: 180}
+  - {name: spline_head, id: 55, angle_deg: 180}
+
+# joints:
+#   - {name: spline_mid1, id: 25, home_deg: 180, limit_deg: [-15,  15]}
+#   - {name: spline_mid2, id: 35, home_deg: 180, limit_deg: [-15,  15]}
+#   - {name: spline_head, id: 15, home_deg: 180, limit_deg: [-15,  15]}
+
+#   - {name: fr_inner,    id: 14, home_deg: 180, limit_deg: [-45,  45]}
+#   - {name: fl_inner,    id: 11, home_deg: 180, limit_deg: [-45,  45]}
+#   - {name: rr_inner,    id: 13, home_deg: 180, limit_deg: [-45,  45]}
+#   - {name: rl_inner,    id: 12, home_deg: 180, limit_deg: [-45,  45]}
+
+#   - {name: fr_mid,      id: 24, home_deg: 180, limit_deg: [-50, 50]}
+#   - {name: fl_mid,      id: 21, home_deg: 180, limit_deg: [-50, 50]}
+#   - {name: rr_mid,      id: 23, home_deg: 180, limit_deg: [-50, 50]}
+#   - {name: rl_mid,      id: 22, home_deg: 180, limit_deg: [-50, 50]}
+
+#   - {name: fr_outer,    id: 34, home_deg: 180, limit_deg: [-45,  45]}
+#   - {name: fl_outer,    id: 31, home_deg: 180, limit_deg: [-45,  45]}
+#   - {name: rr_outer,    id: 33, home_deg: 180, limit_deg: [-45,  45]}
+#   - {name: rl_outer,    id: 32, home_deg: 180, limit_deg: [-45,  45]}
+
+#   - {name: fr_tip,      id: 44, home_deg: 180, limit_deg: [-55, 55]}
+#   - {name: fl_tip,      id: 41, home_deg: 180, limit_deg: [-55, 55]}
+#   - {name: rr_tip,      id: 43, home_deg: 180, limit_deg: [-55, 55]}
+#   - {name: rl_tip,      id: 42, home_deg: 180, limit_deg: [-55, 55]}
+
+
+
+
+feet:
+  # ASSUMPTION: force_scale inferred from the `norm/10` in the original
+  # DynamixelSensorInterface demo; torque_scale is a guess by analogy.
+  # Both need calibration against a known load.
+  force_scale: 0.1            # raw int16 -> N
+  torque_scale: 0.1           # raw int16 -> Nm
+  contact_threshold_n: 4.0
+  # Magnetic contact detection (gecko_control_node): contact when the raw field
+  # deviates from its unloaded baseline by more than contact_threshold_mag (raw
+  # counts). Baseline is averaged from contact_calibration_samples readings at
+  # startup with feet UNLOADED. threshold is a placeholder -- tune it against
+  # the /gecko/foot_contact_deviation topic.
+  contact_threshold_mag: 150
+  contact_calibration_samples: 50
+  # Listed in sensor-id order (1,2,3,4), which IS the foot observation vector
+  # order the policies were trained against -- do not reorder. The leg names are
+  # the real wiring, confirmed by the robot's owner.
+  sensors:
+    - {name: rl, id: 1}
+    - {name: rr, id: 2}
+    - {name: fr, id: 3}
+    - {name: fl, id: 4}
+
+imu:
+  i2c_bus: 1
+  address: 0x6A
+  frame_id: imu_link
+  accel_fs_g: 2               # scale factor is derived from this, not hardcoded
+  gyro_fs_dps: 250            # the original hardcoded the +-125 dps constant here
+  madgwick_beta: 0.04
+  calibration_samples: 200
+
+safety:
+  command_timeout: 0.5        # s without a command -> hold pose and warn
+  home_ramp_seconds: 2.0

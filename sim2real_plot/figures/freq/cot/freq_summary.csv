@@ -1,0 +1,7 @@
+case,model,n,mean_Hz,std_Hz
+flat,ff,10,1.363,0.061
+flat,hebb,10,1.079,0.068
+s15lr,ff,10,1.536,0.055
+s15lr,hebb,10,1.063,0.033
+s20l,ff,10,1.503,0.059
+s20l,hebb,10,0.986,0.088
